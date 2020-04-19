@@ -20,6 +20,7 @@ class DoublyLinkedList{
 
   private:
     DoublyListNode<T> *front;
+    //DoublyListNode<T> *prev;
     DoublyListNode<T> *back;
     int maxSize;
     int size;
@@ -30,7 +31,7 @@ DoublyLinkedList<T>::DoublyLinkedList(){
   size = 0;
   maxSize = 128;
   front = NULL;
-  prev = NULL;
+  back = NULL;
 }
 
 template <class T>

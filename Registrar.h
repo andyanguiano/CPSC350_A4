@@ -17,6 +17,7 @@ class Registrar{
     void checkLongestIdle();
     int getLongestIdle();
     int meanIdleTime();
+    bool isBusy;
 
   private:
     int idleTime;
@@ -25,5 +26,4 @@ class Registrar{
     int numberIdles;
     int totalIdleTime;
     float mean;
-    bool isBusy;
 };

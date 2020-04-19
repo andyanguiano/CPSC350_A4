@@ -13,11 +13,12 @@ class Student{
     int getReqTime();
 
     void setWaitTime(int time);
-
+    
   private:
     int waitTime;
     int arrive;
     int reqTime;
+    int currentTime;
 
     //T* GenQueue; //maybe access memory in queue
 };
