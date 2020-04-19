@@ -1,8 +1,8 @@
 #include "DLLQueue.h"
-#include "Student.h"
 #include "Registrar.h"
-#include <iostream> 
+#include <iostream>
 #include <fstream>
+#include <cstring>
 
 using namespace std;
 

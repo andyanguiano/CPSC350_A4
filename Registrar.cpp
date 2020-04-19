@@ -1,6 +1,8 @@
 #include "Registrar.h"
 
+
 Registrar::Registrar(){
+  busyTime = 0;
   idleTime = 0;
   over5 = 0;
   longestIdle = 0;
@@ -15,11 +17,37 @@ Registrar::~Registrar(){
 }
 
 bool Registrar::checkIsBusy(){
-  return isBusy;
+  return busyTime > 0;
+}
+
+Student Registrar::takeStudent(Student s){
+  if(!(this->checkIsBusy())){
+    busyTime = s.getReqTime();
+    if(idleTime > longestIdle){
+      longestIdle = idleTime;
+    }
+    this->checkOver5();
+    //reset idle time because it has a student
+    idleTime = 0;
+  }
+  return s;
+}
+
+void Registrar::update(){
+  if(busyTime > 0){
+    busyTime -= 1;
+  }else{
+    idleTime += 1;
+  }
 }
 
 void Registrar::reset(){
+  busyTime = 0;
+  if(idleTime > longestIdle){
+    longestIdle = idleTime;
+  }
   idleTime = 0;
+  this->checkOver5();
 }
 
 int Registrar::getIdleTime(){

@@ -61,13 +61,12 @@ void DLLQueue<T>::insert(T d){
 template <class T>
 T DLLQueue<T>::remove(){
   //check is it is empty before it is removed
-  if(isEmpty()){
-    cout << "Queue is empty" << endl;
-    return NULL;
+  if(!(isEmpty())){
+    T c = myQueue->removeFront();
+    --numElements;
+    return c;
   }
-  T c = myQueue->removeFront();
-  --numElements;
-  return c;
+
 }
 
 template <class T>

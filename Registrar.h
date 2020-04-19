@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Student.h"
 
 using namespace std;
 
@@ -8,6 +9,8 @@ class Registrar{
     ~Registrar();
 
     bool checkIsBusy();
+    Student takeStudent(Student s);
+    void update();
     void reset();
 
     int getIdleTime();
@@ -20,6 +23,7 @@ class Registrar{
     bool isBusy;
 
   private:
+    int busyTime;
     int idleTime;
     int over5;
     int longestIdle;

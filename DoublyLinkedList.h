@@ -12,6 +12,9 @@ class DoublyLinkedList{
     T removeBack();
     int search(T val); //return position of ListNode
     T removeAtPos(int pos);
+    T getBack();
+    DoublyListNode<T>* getNPos(int pos);
+    T getPos(int pos);
 
     int getSize();
     bool isEmpty();
@@ -30,7 +33,7 @@ template <class T>
 DoublyLinkedList<T>::DoublyLinkedList(){
   size = 0;
   maxSize = 128;
-  front = NULL; //there is a wierd error in place of the space after front
+  front = NULL;
   back = NULL;
 }
 
@@ -89,13 +92,14 @@ void DoublyLinkedList<T>::insertBack(T d){
 
 template <class T>
 T DoublyLinkedList<T>::removeFront(){
-  if(isEmpty()){
-    cout << "List is Empty" << endl;
-    return NULL;
-  }
-  DoublyListNode<T>* temp  ;
+  if(!(isEmpty())){
+    DoublyListNode<T>* temp = front->next;
+    T tempData = temp->data;
+    delete temp;
+    size--;
+    return tempData;
 
-  return temp;
+  }
 }
 
 template <class T>
@@ -104,7 +108,6 @@ T DoublyLinkedList<T>::removeBack(){
     cout << "List is Empty" << endl;
     return NULL;
   }
-
 }
 
 template <class T>
@@ -144,7 +147,6 @@ T DoublyLinkedList<T>::removeAtPos(int pos){
     curr = curr->next;
     idx++;
   }
-
   //continue with the delete process
   prev->next = curr->next;
   curr->next = NULL;
@@ -153,6 +155,32 @@ T DoublyLinkedList<T>::removeAtPos(int pos){
   size--;
 
   return temp;
+}
+
+template <class T>
+T DoublyLinkedList<T>::getBack(){
+  if(!(isEmpty())){
+    return back->data;
+  }
+}
+
+template <class T>
+DoublyListNode<T>* DoublyLinkedList<T>::getNPos(int pos){
+  int i = 0;
+  if(pos < size){
+    DoublyListNode<T>* current = front->next;
+    while(i != pos){
+      current = current->next;
+      ++i;
+  }
+    return current;
+  }
+}
+
+template <class T>
+T DoublyLinkedList<T>::getPos(int pos){
+  DoublyListNode<T>* current = this->getNPos(pos);
+  return current->data;
 }
 
 template <class T>

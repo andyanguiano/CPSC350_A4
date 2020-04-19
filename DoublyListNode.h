@@ -9,8 +9,6 @@ class DoublyListNode{
     DoublyListNode();
     DoublyListNode(T d);
     ~DoublyListNode();
-
-  private:
     T data;
     DoublyListNode *next;
     DoublyListNode *prev;
