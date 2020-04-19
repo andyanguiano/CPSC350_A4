@@ -30,7 +30,7 @@ template <class T>
 DoublyLinkedList<T>::DoublyLinkedList(){
   size = 0;
   maxSize = 128;
-  front = NULL;
+  front = NULL; //there is a wierd error in place of the space after front
   back = NULL;
 }
 
