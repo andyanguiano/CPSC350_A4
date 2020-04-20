@@ -1,8 +1,9 @@
 #include "Simulation.h"
 
 int main(int argc, char **argv) {
+  string fileName = "";
   if(argc > 1){
-    string fileName = argv[1];
+    fileName = argv[1];
     Simulation* run = new Simulation(fileName);
     run->runSimulation(fileName);
   }else{

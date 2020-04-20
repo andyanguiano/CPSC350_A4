@@ -1,3 +1,6 @@
+#ifndef DLLQUEUE_H
+#define DLLQUEUE_H
+
 #include "DoublyLinkedList.h"
 
 template <class T>
@@ -23,8 +26,10 @@ class DLLQueue{
     int mSize;
     int numElements;
 
-    DoublyLinkedList<T> myQueue; //array
+    DoublyLinkedList<T>* myQueue; //array
 };
+
+#endif
 
 //default constructor
 template <class T>
@@ -48,13 +53,13 @@ DLLQueue<T>::DLLQueue(int maxSize){
 //destructor
 template <class T>
 DLLQueue<T>::~DLLQueue(){
-  delete myQueue;
+
 }
 
 
 template <class T>
 void DLLQueue<T>::insert(T d){
-  myQueue.insertBack(d);
+  myQueue->insertBack(d);
   ++numElements;
 }
 
@@ -71,7 +76,7 @@ T DLLQueue<T>::remove(){
 
 template <class T>
 T DLLQueue<T>::peek(){
-  return myQueue.getFront();
+  return myQueue->getFront();
 }
 
 template <class T>
@@ -86,5 +91,5 @@ bool DLLQueue<T>::isEmpty(){
 
 template <class T>
 int DLLQueue<T>::getSize(){
-  return myQueue.getSize();
+  return myQueue->getSize();
 }

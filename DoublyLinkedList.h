@@ -103,7 +103,7 @@ void DoublyLinkedList<T>::insertPos(int pos, T d){
     node->prev = previous;
     node->next = curr;
   }
-
+  size++;
 }
 
 template <class T>
@@ -195,7 +195,7 @@ DoublyListNode<T>* DoublyLinkedList<T>::getNPos(int pos){
     while(i != pos){
       current = current->next;
       ++i;
-  }
+    }
     return current;
   }
 }
