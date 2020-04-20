@@ -8,10 +8,12 @@ class DoublyLinkedList{
 
     void insertFront(T d);
     void insertBack(T d);
+    void insertPos(int pos, T d);
     T removeFront();
     T removeBack();
     int search(T val); //return position of ListNode
     T removeAtPos(int pos);
+    T getFront();
     T getBack();
     DoublyListNode<T>* getNPos(int pos);
     T getPos(int pos);
@@ -91,6 +93,20 @@ void DoublyLinkedList<T>::insertBack(T d){
 }
 
 template <class T>
+void DoublyLinkedList<T>::insertPos(int pos, T d){
+  DoublyListNode<T>* curr = this->getNPos(pos);
+  if(curr != NULL){
+    DoublyListNode<T>* previous = curr->prev;
+    DoublyListNode<T> *node = new DoublyListNode<T>(d);
+    curr->prev = node;
+    previous->next = node;
+    node->prev = previous;
+    node->next = curr;
+  }
+
+}
+
+template <class T>
 T DoublyLinkedList<T>::removeFront(){
   if(!(isEmpty())){
     DoublyListNode<T>* temp = front->next;
@@ -155,6 +171,13 @@ T DoublyLinkedList<T>::removeAtPos(int pos){
   size--;
 
   return temp;
+}
+
+template <class T>
+T DoublyLinkedList<T>::getFront(){
+  if(!(isEmpty())){
+    return front->data;
+  }
 }
 
 template <class T>

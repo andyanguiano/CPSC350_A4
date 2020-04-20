@@ -10,7 +10,7 @@ class Simulation{
   public:
     Simulation(string file);
     ~Simulation();
-    int runSimulation(string file);
+    void runSimulation(string file);
     int numBusyWindows();
 
   private:

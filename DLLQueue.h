@@ -23,7 +23,7 @@ class DLLQueue{
     int mSize;
     int numElements;
 
-    DoublyLinkedList<T> *myQueue; //array
+    DoublyLinkedList<T> myQueue; //array
 };
 
 //default constructor
@@ -54,7 +54,7 @@ DLLQueue<T>::~DLLQueue(){
 
 template <class T>
 void DLLQueue<T>::insert(T d){
-  myQueue->insertBack(d);
+  myQueue.insertBack(d);
   ++numElements;
 }
 
@@ -71,7 +71,7 @@ T DLLQueue<T>::remove(){
 
 template <class T>
 T DLLQueue<T>::peek(){
-  return myQueue->front;
+  return myQueue.getFront();
 }
 
 template <class T>
@@ -82,4 +82,9 @@ bool DLLQueue<T>::isFull(){
 template <class T>
 bool DLLQueue<T>::isEmpty(){
   return (numElements == 0);
+}
+
+template <class T>
+int DLLQueue<T>::getSize(){
+  return myQueue.getSize();
 }

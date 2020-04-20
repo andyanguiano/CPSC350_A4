@@ -7,7 +7,7 @@ Simulation::Simulation(string file){
 Simulation::~Simulation(){
 }
 
-int Simulation::runSimulation(string file){
+void Simulation::runSimulation(string file){
   ifstream infs;
   infs.open(file);
 
@@ -42,9 +42,9 @@ int Simulation::runSimulation(string file){
     //clock;
     int currentTime = 0;
     //loop while there are students in queue and there are busy windows
-    while(queue.getSize() != 0 && numBusyWindows() != 0){
+    while(/*queue.getSize() != 0 && */numBusyWindows() != 0){
       //loop while there are students in queue and windows are not full
-      while(queue.getSize() > 0 && numBusyWindows() != numWindows){
+      while(/*queue.getSize() > 0 &&*/ numBusyWindows() != numWindows){
         //go through windows
         for(int i = 0; i < numWindows; ++i){
           //if not busy than take a student
@@ -76,8 +76,71 @@ int Simulation::runSimulation(string file){
     lineNum += 1;
   }
 
+  //calculate
+  //for mean
+  int totalWaitingTime = 0;
+  //for median
+  DoublyLinkedList<int> orderedWaitTimes;
+  int longestWaitTime = 0;
+  int waitOver10 = 0;
 
+  for(int i = 0; i < finishedStudents.getSize(); ++i){
+    int currentWaitTime = finishedStudents.getPos(i).getWaitTime();
+    if(currentWaitTime > longestWaitTime){
+      longestWaitTime = currentWaitTime;
+    }
+    if(currentWaitTime > 10){
+      waitOver10 += 1;
+    }
 
+    //check is wait time was added if not then add to end
+    bool checkAdded = false;
+    //for loop to insert wait times from greatest to least
+    for(int j = 0; j < orderedWaitTimes.getSize(); ++j){
+      if(currentWaitTime < orderedWaitTimes.getPos(j)){
+        orderedWaitTimes.insertPos(j, currentWaitTime);
+        checkAdded = true;
+        break;
+      }
+    }
+
+    if(!checkAdded){
+      orderedWaitTimes.insertBack(currentWaitTime);
+    }
+    totalWaitingTime += currentWaitTime;
+  }
+
+  //mean wait
+  float meanWaitTime = totalWaitingTime/(orderedWaitTimes.getSize());
+  //median wait
+  int middlePos = orderedWaitTimes.getSize()/2;
+  float medianWaitTime = orderedWaitTimes.getPos(middlePos);
+
+  //for mean idle time
+  int totalIdleTime = 0;
+  int longestIdleTime = 0;
+  int idleOver5 = 0;
+
+  for(int i = 0; i < numWindows; ++i){
+    int currIdleTime = windows.getPos(i).getIdleTime();
+    totalIdleTime += currIdleTime;
+    if(currIdleTime > longestIdleTime){
+      longestIdleTime = currIdleTime;
+    }
+    if(currIdleTime > 5){
+      idleOver5 += 1;
+    }
+  }
+
+  double meanIdleTime = totalIdleTime/numWindows;
+
+  cout << "1. The mean student wait time: " << meanWaitTime << endl;
+  cout << "2. The median student wait time: " << medianWaitTime << endl;
+  cout << "3. The longest student wait time: " << longestWaitTime << endl;
+  cout << "4. The number of students waiting over 10 minutes: " << waitOver10 << endl;
+  cout << "5. The mean window idle time: " << meanIdleTime << endl;
+  cout << "6. The longest window idle time: " << longestIdleTime << endl;
+  cout << "7. Number of windows idle for over 5 minutes: " << idleOver5;
 }
 
 int Simulation::numBusyWindows(){
