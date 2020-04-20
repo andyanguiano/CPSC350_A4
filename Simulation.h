@@ -14,7 +14,7 @@ class Simulation{
     int numBusyWindows();
 
   private:
-    DLLQueue<Student> queue;
+    DLLQueue<Student>* queue;
     DoublyLinkedList<Registrar> windows;
     DoublyLinkedList<Student> finishedStudents;
 };

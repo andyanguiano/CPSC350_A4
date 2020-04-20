@@ -37,20 +37,21 @@ void Simulation::runSimulation(string file){
         lineNum += 1;
         int timeNeeded = stoi(line);
         Student* tempStudent = new Student(time, timeNeeded);
-        queue.insert(*tempStudent);
+        queue->insert(*tempStudent);
       }
 
       //clock;
       int currentTime = 0;
+
       //loop while there are students in queue and there are busy windows
-      while(queue.getSize() != 0 && numBusyWindows() != 0){ //does not make it in this loop , segmentation fault
+      while(queue->getSize() != 0 && numBusyWindows() != 0){ //does not make it in this loop , segmentation fault
         //loop while there are students in queue and windows are not full
-        while(queue.getSize() > 0 && numBusyWindows() != numWindows){
+        while(queue->getSize() > 0 && numBusyWindows() != numWindows){
           //go through windows
           for(int i = 0; i < numWindows; ++i){
             //if not busy than take a student
             if(!(windows.getPos(i).checkIsBusy())){
-              Student tempStudent = queue.remove();
+              Student tempStudent = queue->remove();
               windows.getPos(i).takeStudent(tempStudent);
               finishedStudents.insertBack(tempStudent);
               tempStudent = finishedStudents.getBack();

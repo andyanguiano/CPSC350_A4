@@ -75,6 +75,7 @@ void DoublyLinkedList<T>::insertFront(T d){
     front->prev = node;
     node->next = front;
   }
+  front = node;
   size++;
 }
 
@@ -82,10 +83,12 @@ template <class T>
 void DoublyLinkedList<T>::insertBack(T d){
   DoublyListNode<T> *node = new DoublyListNode<T>(d);
   if(isEmpty()){
+    front = node;
     back = node;
   }else{
     //not empty
     back->next = node;
+    node->next = NULL;
     node->prev = back;
   }
   back = node;
@@ -110,19 +113,41 @@ template <class T>
 T DoublyLinkedList<T>::removeFront(){
   if(!(isEmpty())){
     DoublyListNode<T>* temp = front->next;
-    T tempData = temp->data;
-    delete temp;
-    size--;
-    return tempData;
-
+    //only one node in the list
+    if(front->next == NULL){
+        back = NULL;
+      }else{
+        //more than one node in the list
+        front->next->prev = NULL;
+        front = front->next;
+        front->prev = NULL;
+        temp->next = NULL;
+      }
+      T tempData = temp->data;
+      size--;
+      delete temp;
+      return tempData;
   }
 }
 
 template <class T>
 T DoublyLinkedList<T>::removeBack(){
-  if(isEmpty()){
-    cout << "List is Empty" << endl;
-    return NULL;
+  DoublyListNode<T> *tempNode = back;
+
+  if(!(isEmpty())){
+    if(back->prev == NULL){
+      front = NULL;
+    }else{
+      //more than one node in the list
+      front->prev->next = NULL;
+    }
+
+    back = back->prev;
+    tempNode->prev = NULL;
+    T temp = tempNode->data;
+    size--;
+    delete tempNode;
+    return temp;
   }
 }
 
@@ -154,7 +179,7 @@ T DoublyLinkedList<T>::removeAtPos(int pos){
   //error to make sure pos does not exceed size of listnode
   int idx = 0;
 
-  DoublyListNode<T> *curr;
+  DoublyListNode<T> *curr = front;
   DoublyListNode<T> *prev = front;
 
   while(idx != pos){
