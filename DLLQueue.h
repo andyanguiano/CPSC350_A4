@@ -91,5 +91,5 @@ bool DLLQueue<T>::isEmpty(){
 
 template <class T>
 int DLLQueue<T>::getSize(){
-  return myQueue->getSize();
+  return numElements;
 }

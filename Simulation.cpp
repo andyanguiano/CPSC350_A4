@@ -15,6 +15,7 @@ void Simulation::runSimulation(string file){
   string line = "";
   int totalNumStudents = 0;
 
+  //getn numWindows
   getline(infs,line);
   int numWindows = stoi(line);
   for(int i = 0; i < numWindows; ++i){
@@ -23,62 +24,72 @@ void Simulation::runSimulation(string file){
   }
 
   if(!infs.fail()){
+    //this gets time students arrive
     while(getline(infs,line)){
       //lineNum += 1;
       int time = stoi(line);
-
+      //gets numStudents at time
       getline(infs,line);
       //lineNum += 1;
       int numStudents = stoi(line);
       totalNumStudents += numStudents;
 
       for(int i = 0; i < numStudents; ++i){
+        //gets timeNeeded for wach student
         getline(infs,line);
         lineNum += 1;
         int timeNeeded = stoi(line);
         Student* tempStudent = new Student(time, timeNeeded);
-        queue->insert(*tempStudent);
+        allStudents.insertBack(*tempStudent);
       }
+    }
+  }
 
-      //clock;
-      int currentTime = 0;
-
-      //loop while there are students in queue and there are busy windows
-      while(queue->getSize() != 0 && numBusyWindows() != 0){ //does not make it in this loop , segmentation fault
-        //loop while there are students in queue and windows are not full
-        while(queue->getSize() > 0 && numBusyWindows() != numWindows){
-          //go through windows
-          for(int i = 0; i < numWindows; ++i){
-            //if not busy than take a student
-            if(!(windows.getPos(i).checkIsBusy())){
-              Student tempStudent = queue->remove();
-              windows.getPos(i).takeStudent(tempStudent);
-              finishedStudents.insertBack(tempStudent);
-              tempStudent = finishedStudents.getBack();
-              tempStudent.setWaitTime(i);
-            }
-          }
-        }
-
-        //update all windows in clock tick
-        for(int i = 0; i < numWindows; ++i){
-          windows.getPos(i).update();
-        }
-
-        //update time
-        currentTime += 1;
-
-
+  cout << "1" << endl;
+  //clock;
+  int currentTime = 1;
+  //main body loop
+  while(allStudents.getSize() != 0 /*&& queue->getSize() != 0 && numBusyWindows() != 0*/){ // my queue.getSize is not working
+    int numAllStudents = allStudents.getSize();
+    cout << "2" << endl;
+    //add students to queue if their time
+    for(int i = 0; i < numAllStudents; ++i){
+      if(currentTime == allStudents.getPos(i).getArrive()){
+        cout << "3" << endl;
+        queue->insert(allStudents.getPos(i));
+        cout << "4" << endl;
+        allStudents.removeAtPos(i);
       }
+    }
 
-      for(int i = 0; i < numWindows; ++i){
+    //go through windows
+    for(int i = 0; i < numWindows; ++i){
+      //if not busy than take a student
+      if(!(windows.getPos(i).checkIsBusy()) && queue->getSize() > 0){
+        Student tempStudent = queue->remove();
+        windows.getPos(i).takeStudent(tempStudent);
+        finishedStudents.insertBack(tempStudent);
+        tempStudent = finishedStudents.getBack();
+        tempStudent.setWaitTime(i);
+      }
+    }
+
+    //update all windows in clock tick
+    for(int i = 0; i < numWindows; ++i){
+      windows.getPos(i).update();
+    }
+
+    //update time
+    currentTime += 1;
+
+  }
+
+      /*for(int i = 0; i < numWindows; ++i){
         windows.getPos(i).reset();
       }
 
-      lineNum += 1;
+      lineNum += 1;*/
 
-    }
-  }
   //calculate
   //for mean
   int totalWaitingTime = 0;
