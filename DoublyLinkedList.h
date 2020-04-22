@@ -1,4 +1,5 @@
 #include "DoublyListNode.h"
+#include <iostream>
 
 template <class T>
 class DoublyLinkedList{
@@ -23,18 +24,15 @@ class DoublyLinkedList{
     void printList();
     bool containsDuplicates();
 
-  private:
     DoublyListNode<T> *front;
-    //DoublyListNode<T> *prev;
     DoublyListNode<T> *back;
-    int maxSize;
+  private:
     int size;
 };
 
 template <class T>
 DoublyLinkedList<T>::DoublyLinkedList(){
   size = 0;
-  maxSize = 128;
   front = NULL;
   back = NULL;
 }
@@ -84,7 +82,6 @@ void DoublyLinkedList<T>::insertBack(T d){
   DoublyListNode<T> *node = new DoublyListNode<T>(d);
   if(isEmpty()){
     front = node;
-    back = node;
   }else{
     //not empty
     back->next = node;
@@ -111,9 +108,9 @@ void DoublyLinkedList<T>::insertPos(int pos, T d){
 
 template <class T>
 T DoublyLinkedList<T>::removeFront(){
-  if(!(isEmpty())){
-    DoublyListNode<T>* temp = front->next;
+    DoublyListNode<T>* temp = front;
     //only one node in the list
+
     if(front->next == NULL){
         back = NULL;
       }else{
@@ -127,7 +124,6 @@ T DoublyLinkedList<T>::removeFront(){
       size--;
       delete temp;
       return tempData;
-  }
 }
 
 template <class T>
@@ -216,7 +212,7 @@ template <class T>
 DoublyListNode<T>* DoublyLinkedList<T>::getNPos(int pos){
   int i = 0;
   if(pos < size){
-    DoublyListNode<T>* current = front->next;
+    DoublyListNode<T>* current = front;//->next;
     while(i != pos){
       current = current->next;
       ++i;
@@ -235,7 +231,7 @@ template <class T>
 bool DoublyLinkedList<T>::containsDuplicates(){
   int pos = -1;
   DoublyListNode<T> *curr = front;
-  int arrayCheck[maxSize];
+  int arrayCheck[size];
   int test = 0;
 
   while(curr != NULL){

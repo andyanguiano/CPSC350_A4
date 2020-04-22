@@ -2,6 +2,7 @@
 
 Simulation::Simulation(string file){
   file = "";
+  queue = new DLLQueue<Student>();
 }
 
 Simulation::~Simulation(){
@@ -45,20 +46,18 @@ void Simulation::runSimulation(string file){
     }
   }
 
-  cout << "1" << endl;
   //clock;
   int currentTime = 1;
+
   //main body loop
-  while(allStudents.getSize() != 0 /*&& queue->getSize() != 0 && numBusyWindows() != 0*/){ // my queue.getSize is not working
+  while(allStudents.getSize() != 0 || queue->getSize() != 0 || numBusyWindows() != 0){
     int numAllStudents = allStudents.getSize();
-    cout << "2" << endl;
     //add students to queue if their time
     for(int i = 0; i < numAllStudents; ++i){
-      if(currentTime == allStudents.getPos(i).getArrive()){
-        cout << "3" << endl;
-        queue->insert(allStudents.getPos(i));
-        cout << "4" << endl;
-        allStudents.removeAtPos(i);
+      if(currentTime == allStudents.getFront().getArrive()){
+        queue->insert(allStudents.getFront());
+        allStudents.removeFront();
+        numAllStudents -= 1;
       }
     }
 
@@ -67,10 +66,10 @@ void Simulation::runSimulation(string file){
       //if not busy than take a student
       if(!(windows.getPos(i).checkIsBusy()) && queue->getSize() > 0){
         Student tempStudent = queue->remove();
+        tempStudent.setWaitTime(currentTime - tempStudent.getArrive());
         windows.getPos(i).takeStudent(tempStudent);
         finishedStudents.insertBack(tempStudent);
         tempStudent = finishedStudents.getBack();
-        tempStudent.setWaitTime(i);
       }
     }
 
@@ -92,14 +91,16 @@ void Simulation::runSimulation(string file){
 
   //calculate
   //for mean
+  cout << "TotalStudents: " << totalNumStudents << endl;
   int totalWaitingTime = 0;
   //for median
-  DoublyLinkedList<int> orderedWaitTimes;
+  DoublyLinkedList<int>* orderedWaitTimes = new DoublyLinkedList<int>;
   int longestWaitTime = 0;
   int waitOver10 = 0;
 
   for(int i = 0; i < finishedStudents.getSize(); ++i){
     int currentWaitTime = finishedStudents.getPos(i).getWaitTime();
+
     if(currentWaitTime > longestWaitTime){
       longestWaitTime = currentWaitTime;
     }
@@ -110,25 +111,25 @@ void Simulation::runSimulation(string file){
     //check is wait time was added if not then add to end
     bool checkAdded = false;
     //for loop to insert wait times from greatest to least
-    for(int j = 0; j < orderedWaitTimes.getSize(); ++j){
-      if(currentWaitTime < orderedWaitTimes.getPos(j)){
-        orderedWaitTimes.insertPos(j, currentWaitTime);
+    for(int j = 0; j < orderedWaitTimes->getSize(); ++j){
+      if(currentWaitTime < orderedWaitTimes->getPos(j)){
+        orderedWaitTimes->insertPos(j, currentWaitTime);
         checkAdded = true;
         break;
       }
     }
 
     if(!checkAdded){
-      orderedWaitTimes.insertBack(currentWaitTime);
+      orderedWaitTimes->insertBack(currentWaitTime);
     }
     totalWaitingTime += currentWaitTime;
   }
 
   //mean wait
-  float meanWaitTime = totalWaitingTime/(orderedWaitTimes.getSize());
+  float meanWaitTime = totalWaitingTime/(orderedWaitTimes->getSize());
   //median wait
-  int middlePos = orderedWaitTimes.getSize()/2;
-  float medianWaitTime = orderedWaitTimes.getPos(middlePos);
+  int middlePos = orderedWaitTimes->getSize()/2;
+  float medianWaitTime = orderedWaitTimes->getPos(middlePos);
 
   //for mean idle time
   int totalIdleTime = 0;
@@ -136,14 +137,13 @@ void Simulation::runSimulation(string file){
   int idleOver5 = 0;
 
   for(int i = 0; i < numWindows; ++i){
-    int currIdleTime = windows.getPos(i).getIdleTime();
+    int currIdleTime = windows.getPos(i).getTotalIdleTime();
     totalIdleTime += currIdleTime;
     if(currIdleTime > longestIdleTime){
       longestIdleTime = currIdleTime;
     }
-    if(currIdleTime > 5){
-      idleOver5 += 1;
-    }
+    int currIdleOver5 = windows.getPos(i).getOver5();
+    idleOver5 += currIdleOver5;
   }
 
   double meanIdleTime = totalIdleTime/numWindows;
@@ -154,7 +154,7 @@ void Simulation::runSimulation(string file){
   cout << "4. The number of students waiting over 10 minutes: " << waitOver10 << endl;
   cout << "5. The mean window idle time: " << meanIdleTime << endl;
   cout << "6. The longest window idle time: " << longestIdleTime << endl;
-  cout << "7. Number of windows idle for over 5 minutes: " << idleOver5;
+  cout << "7. Number of windows idle for over 5 minutes: " << idleOver5 << endl;
 }
 
 int Simulation::numBusyWindows(){

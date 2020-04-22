@@ -1,12 +1,15 @@
-
+#ifndef DOUBLYLISTNODE_H
+#define DOUBLYLISTNODE_H
 #include <iostream>
 
 using namespace std;
 
+//list node for a doubly linked list
+//template class for any data
 template <class T>
 class DoublyListNode{
   public:
-    DoublyListNode();
+    //DoublyListNode();
     DoublyListNode(T d);
     ~DoublyListNode();
     T data;
@@ -15,12 +18,15 @@ class DoublyListNode{
 
 };
 
+#endif
 
+/*
 template <class T>
 DoublyListNode<T>::DoublyListNode(){
   next = NULL;
   prev = NULL;
 }
+*/
 
 template <class T>
 DoublyListNode<T>::DoublyListNode(T d){
@@ -31,5 +37,4 @@ DoublyListNode<T>::DoublyListNode(T d){
 
 template <class T>
 DoublyListNode<T>::~DoublyListNode(){
-
 }

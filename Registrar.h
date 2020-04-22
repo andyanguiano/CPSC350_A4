@@ -20,6 +20,7 @@ class Registrar{
     void checkLongestIdle();
     int getLongestIdle();
     int meanIdleTime();
+    int getTotalIdleTime();
     bool isBusy;
 
   private:
