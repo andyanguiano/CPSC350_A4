@@ -51,21 +51,20 @@ void Simulation::runSimulation(string file){
 
   //main body loop
   while(allStudents.getSize() != 0 || queue->getSize() != 0 || numBusyWindows() != 0){
+    cout << "busy windows: " << numBusyWindows() << endl;
     int numAllStudents = allStudents.getSize();
     //add students to queue if their time
-    for(int i = 0; i < numAllStudents; ++i){
-      if(currentTime == allStudents.getFront().getArrive()){
-        queue->insert(allStudents.getFront());
-        allStudents.removeFront();
-        numAllStudents -= 1;
-      }
+    while(allStudents.getSize() > 0 && currentTime == allStudents.getFront().getArrive()){
+        queue->insert(allStudents.removeFront());
     }
 
     //go through windows
     for(int i = 0; i < numWindows; ++i){
       //if not busy than take a student
+      cout << "WINDOW BUSY TIME: " << windows.getPos(i).getBusyTime() << endl;
       if(!(windows.getPos(i).checkIsBusy()) && queue->getSize() > 0){
         Student tempStudent = queue->remove();
+        cout << "Student Req time: " << tempStudent.getReqTime() << endl;
         tempStudent.setWaitTime(currentTime - tempStudent.getArrive());
         windows.getPos(i).takeStudent(tempStudent);
         finishedStudents.insertBack(tempStudent);
@@ -147,19 +146,20 @@ void Simulation::runSimulation(string file){
   }
 
   double meanIdleTime = totalIdleTime/numWindows;
-
+  /*
   cout << "1. The mean student wait time: " << meanWaitTime << endl;
   cout << "2. The median student wait time: " << medianWaitTime << endl;
   cout << "3. The longest student wait time: " << longestWaitTime << endl;
   cout << "4. The number of students waiting over 10 minutes: " << waitOver10 << endl;
   cout << "5. The mean window idle time: " << meanIdleTime << endl;
   cout << "6. The longest window idle time: " << longestIdleTime << endl;
-  cout << "7. Number of windows idle for over 5 minutes: " << idleOver5 << endl;
+  cout << "7. Number of windows idle for over 5 minutes: " << idleOver5 << endl;*/
 }
 
 int Simulation::numBusyWindows(){
   int busy = 0;
-  for(int i = 0; i > windows.getSize(); ++i){
+  for(int i = 0; i < windows.getSize(); ++i){
+    cout << "BUSY: " << windows.getPos(i).checkIsBusy() << endl;
     if(windows.getPos(i).checkIsBusy()){
       busy += 1;
     }

@@ -15,7 +15,7 @@ class Simulation{
 
   private:
     DoublyLinkedList<Student> allStudents;
-    DLLQueue<Student>* queue;
+    DLLQueue<Student> *queue;
     DoublyLinkedList<Registrar> windows;
     DoublyLinkedList<Student> finishedStudents;
 };

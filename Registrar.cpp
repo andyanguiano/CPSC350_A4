@@ -92,3 +92,7 @@ int Registrar::meanIdleTime(){
 int Registrar::getTotalIdleTime(){
   return totalIdleTime;
 }
+
+int Registrar::getBusyTime(){
+  return busyTime;
+}
