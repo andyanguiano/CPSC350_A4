@@ -19,9 +19,10 @@ void Simulation::runSimulation(string file){
   //getn numWindows
   getline(infs,line);
   int numWindows = stoi(line);
+  Registrar windows[numWindows];
   for(int i = 0; i < numWindows; ++i){
     Registrar tempReg;
-    windows.insertBack(tempReg);
+    windows[i] = tempReg;
   }
 
   if(!infs.fail()){
@@ -48,10 +49,17 @@ void Simulation::runSimulation(string file){
 
   //clock;
   int currentTime = 1;
-
+  int totalBusy = 0;
   //main body loop
-  while(allStudents.getSize() != 0 || queue->getSize() != 0 || numBusyWindows() != 0){
-    cout << "busy windows: " << numBusyWindows() << endl;
+  while(allStudents.getSize() != 0 || queue->getSize() != 0 || totalBusy != 0){
+    int busy = 0;
+    for(int i = 0; i < numWindows; ++i){
+      if(windows[i].checkIsBusy()){
+        busy += 1;
+      }
+    }
+    totalBusy = busy;
+
     int numAllStudents = allStudents.getSize();
     //add students to queue if their time
     while(allStudents.getSize() > 0 && currentTime == allStudents.getFront().getArrive()){
@@ -61,12 +69,10 @@ void Simulation::runSimulation(string file){
     //go through windows
     for(int i = 0; i < numWindows; ++i){
       //if not busy than take a student
-      cout << "WINDOW BUSY TIME: " << windows.getPos(i).getBusyTime() << endl;
-      if(!(windows.getPos(i).checkIsBusy()) && queue->getSize() > 0){
+      if(!(windows[i].checkIsBusy()) && queue->getSize() > 0){
         Student tempStudent = queue->remove();
-        cout << "Student Req time: " << tempStudent.getReqTime() << endl;
         tempStudent.setWaitTime(currentTime - tempStudent.getArrive());
-        windows.getPos(i).takeStudent(tempStudent);
+        windows[i].takeStudent(tempStudent);
         finishedStudents.insertBack(tempStudent);
         tempStudent = finishedStudents.getBack();
       }
@@ -74,19 +80,13 @@ void Simulation::runSimulation(string file){
 
     //update all windows in clock tick
     for(int i = 0; i < numWindows; ++i){
-      windows.getPos(i).update();
+      windows[i].update();
     }
 
     //update time
     currentTime += 1;
 
   }
-
-      /*for(int i = 0; i < numWindows; ++i){
-        windows.getPos(i).reset();
-      }
-
-      lineNum += 1;*/
 
   //calculate
   //for mean
@@ -136,33 +136,22 @@ void Simulation::runSimulation(string file){
   int idleOver5 = 0;
 
   for(int i = 0; i < numWindows; ++i){
-    int currIdleTime = windows.getPos(i).getTotalIdleTime();
+    int currIdleTime = windows[i].getTotalIdleTime();
     totalIdleTime += currIdleTime;
     if(currIdleTime > longestIdleTime){
       longestIdleTime = currIdleTime;
     }
-    int currIdleOver5 = windows.getPos(i).getOver5();
+    int currIdleOver5 = windows[i].getOver5();
     idleOver5 += currIdleOver5;
   }
 
   double meanIdleTime = totalIdleTime/numWindows;
-  /*
+
   cout << "1. The mean student wait time: " << meanWaitTime << endl;
   cout << "2. The median student wait time: " << medianWaitTime << endl;
   cout << "3. The longest student wait time: " << longestWaitTime << endl;
   cout << "4. The number of students waiting over 10 minutes: " << waitOver10 << endl;
   cout << "5. The mean window idle time: " << meanIdleTime << endl;
   cout << "6. The longest window idle time: " << longestIdleTime << endl;
-  cout << "7. Number of windows idle for over 5 minutes: " << idleOver5 << endl;*/
-}
-
-int Simulation::numBusyWindows(){
-  int busy = 0;
-  for(int i = 0; i < windows.getSize(); ++i){
-    cout << "BUSY: " << windows.getPos(i).checkIsBusy() << endl;
-    if(windows.getPos(i).checkIsBusy()){
-      busy += 1;
-    }
-  }
-  return busy;
+  cout << "7. Number of windows idle for over 5 minutes: " << idleOver5 << endl;
 }

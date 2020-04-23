@@ -11,11 +11,10 @@ class Simulation{
     Simulation(string file);
     ~Simulation();
     void runSimulation(string file);
-    int numBusyWindows();
+    //int numBusyWindows();
 
   private:
     DoublyLinkedList<Student> allStudents;
     DLLQueue<Student> *queue;
-    DoublyLinkedList<Registrar> windows;
     DoublyLinkedList<Student> finishedStudents;
 };
