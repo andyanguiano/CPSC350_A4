@@ -25,6 +25,7 @@ void Simulation::runSimulation(string file){
     windows[i] = tempReg;
   }
 
+  int totalWaitingTime = 0;
   if(!infs.fail()){
     //this gets time students arrive
     while(getline(infs,line)){
@@ -50,6 +51,7 @@ void Simulation::runSimulation(string file){
   //clock;
   int currentTime = 1;
   int totalBusy = 0;
+
   //main body loop
   while(allStudents.getSize() != 0 || queue->getSize() != 0 || totalBusy != 0){
     int busy = 0;
@@ -73,7 +75,7 @@ void Simulation::runSimulation(string file){
         Student tempStudent = queue->remove();
         tempStudent.setWaitTime(currentTime - tempStudent.getArrive());
         windows[i].takeStudent(tempStudent);
-        finishedStudents.insertBack(tempStudent);
+        finishedStudents.insertFront(tempStudent);
         tempStudent = finishedStudents.getBack();
       }
     }
@@ -90,15 +92,17 @@ void Simulation::runSimulation(string file){
 
   //calculate
   //for mean
-  cout << "TotalStudents: " << totalNumStudents << endl;
-  int totalWaitingTime = 0;
+
+  //int totalWaitingTime = 0;
   //for median
   DoublyLinkedList<int>* orderedWaitTimes = new DoublyLinkedList<int>;
   int longestWaitTime = 0;
   int waitOver10 = 0;
 
-  for(int i = 0; i < finishedStudents.getSize(); ++i){
-    int currentWaitTime = finishedStudents.getPos(i).getWaitTime();
+  for(int i = 0; i < finishedStudents.getSize()-1; ++i){
+
+    int currentWaitTime = finishedStudents.getPos(i).getWaitTime();//here is seg fault
+    cout << finishedStudents.getBack().getWaitTime() << endl;
 
     if(currentWaitTime > longestWaitTime){
       longestWaitTime = currentWaitTime;
@@ -106,7 +110,6 @@ void Simulation::runSimulation(string file){
     if(currentWaitTime > 10){
       waitOver10 += 1;
     }
-
     //check is wait time was added if not then add to end
     bool checkAdded = false;
     //for loop to insert wait times from greatest to least
