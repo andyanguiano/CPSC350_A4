@@ -9,4 +9,4 @@ References: Class Textbook; Office Hours; Classmates: Jessie Roux, Miles Milosev
 
 Andy was the only one who pushed to github but Thomas and Andy worked together on all the code.
 
-Note: Our simulation is empty at time 0 and begins at time 1, this could be why some stats are off by a little.
+NOTE: Our simulation is empty at time 0 and begins at time 1, this could be why some stats are off by a little.
