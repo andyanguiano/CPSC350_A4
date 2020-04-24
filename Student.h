@@ -2,23 +2,23 @@
 
 using namespace std;
 
+//Student Object
 class Student{
   public:
-    Student();
+    Student();//default
     Student(int arriveTime, int timeNeeded);
-    ~Student();
+    ~Student();//delete
 
-    int getWaitTime();
-    int getArrive();
-    int getReqTime();
+    int getWaitTime();//returns how long student waited
+    int getArrive();//returns what time the student arrived
+    int getReqTime();//returns the required time for the student
 
-    void setWaitTime(int time);
-    
+    void setWaitTime(int time);//sets how long the student waited
+
   private:
     int waitTime;
     int arrive;
     int reqTime;
     int currentTime;
 
-    //T* GenQueue; //maybe access memory in queue
 };

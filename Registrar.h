@@ -1,28 +1,25 @@
 #include <iostream>
 #include "Student.h"
-
+//object of a registrar
 using namespace std;
 
 class Registrar{
   public:
-    Registrar();
-    ~Registrar();
+    Registrar();//defalut
+    ~Registrar();//delete
 
-    bool checkIsBusy();
-    Student takeStudent(Student s);
-    void update();
-    void reset();
+    bool checkIsBusy();//returns if busy
+    Student takeStudent(Student s);//takes a students requrired time
+    void update();//updats every clocktick
 
-    int getIdleTime();
-    int getLongestIdlee();
-    void checkOver5();
-    int getOver5();
-    void checkLongestIdle();
-    int getLongestIdle();
-    int meanIdleTime();
-    int getTotalIdleTime();
-    int getBusyTime();
-    bool isBusy;
+    int getIdleTime();//returns how long the idle was
+    int getLongestIdlee();//returns the longest idle
+    void checkOver5();//checks to see if over 5 idle time
+    int getOver5();//returns over 5
+    void checkLongestIdle();//check to see if it a longest idle
+    int getLongestIdle();//returns the longest idle
+    int getTotalIdleTime();//returns totalIdleTime
+    int getBusyTime();//returns how long was busy
 
   private:
     int busyTime;
@@ -31,5 +28,4 @@ class Registrar{
     int longestIdle;
     int numberIdles;
     int totalIdleTime;
-    float mean;
 };

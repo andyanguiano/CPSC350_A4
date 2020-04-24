@@ -8,10 +8,9 @@ using namespace std;
 
 class Simulation{
   public:
-    Simulation(string file);
-    ~Simulation();
-    void runSimulation(string file);
-    //int numBusyWindows();
+    Simulation(string file);//default
+    ~Simulation();//delete
+    void runSimulation(string file);//runs simulation
 
   private:
     DoublyLinkedList<Student> allStudents;

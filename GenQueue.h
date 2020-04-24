@@ -1,15 +1,15 @@
 #include <iostream>
 
 using namespace std;
-
+//implements an array queue
 template <class T>
 class GenQueue{
   public:
-    GenQueue();
-    GenQueue(int maxSize);
-    ~GenQueue();
+    GenQueue();//constructor
+    GenQueue(int maxSize);//default
+    ~GenQueue();//delete
 
-    void insert(T d);
+    void insert(T d);//insert at 
     T remove();
 
     //aux functions

@@ -2,20 +2,20 @@
 #define DLLQUEUE_H
 
 #include "DoublyLinkedList.h"
-
+//implements doubly linked list queue
 template <class T>
 class DLLQueue{
   public:
-    DLLQueue();
-    ~DLLQueue();
+    DLLQueue();//constructor
+    ~DLLQueue();//delete
 
-    void insert(T d);
-    T remove();
+    void insert(T d);//insert to teh back of the list
+    T remove();//removes from the front of the list
 
     //aux functions
-    T peek();
-    bool isEmpty();
-    int getSize();
+    T peek();//returns front value
+    bool isEmpty();//returns if empty
+    int getSize();//returns size
 
   private:
     //vars

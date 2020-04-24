@@ -20,14 +20,6 @@ class DoublyListNode{
 
 #endif
 
-/*
-template <class T>
-DoublyListNode<T>::DoublyListNode(){
-  next = NULL;
-  prev = NULL;
-}
-*/
-
 template <class T>
 DoublyListNode<T>::DoublyListNode(T d){
   data = d;
@@ -37,4 +29,5 @@ DoublyListNode<T>::DoublyListNode(T d){
 
 template <class T>
 DoublyListNode<T>::~DoublyListNode(){
+  
 }

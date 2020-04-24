@@ -7,9 +7,7 @@ Registrar::Registrar(){
   over5 = 0;
   longestIdle = 0;
   numberIdles = 0;
-  mean = 0.0;
   totalIdleTime = 0;
-  isBusy = false;
 }
 
 Registrar::~Registrar(){
@@ -26,6 +24,7 @@ Student Registrar::takeStudent(Student s){
     if(idleTime > longestIdle){
       longestIdle = idleTime;
     }
+    totalIdleTime += idleTime;
     //reset idle time because it has a student
     idleTime = 0;
   }
@@ -45,15 +44,6 @@ void Registrar::update(){
   if(idleTime > longestIdle){
     longestIdle = idleTime;
   }
-}
-
-void Registrar::reset(){
-  busyTime = 0;
-  if(idleTime > longestIdle){
-    longestIdle = idleTime;
-  }
-  idleTime = 0;
-  this->checkOver5();
 }
 
 int Registrar::getIdleTime(){
@@ -83,10 +73,6 @@ void Registrar::checkLongestIdle(){
 
 int Registrar::getLongestIdle(){
   return longestIdle;
-}
-
-int Registrar::meanIdleTime(){
-  mean = totalIdleTime/numberIdles;
 }
 
 int Registrar::getTotalIdleTime(){

@@ -1,31 +1,32 @@
 #include "DoublyListNode.h"
 #include <iostream>
 
+//Implemented Doubly Linked List Class
 template <class T>
 class DoublyLinkedList{
   public:
-    DoublyLinkedList();
-    ~DoublyLinkedList();
+    DoublyLinkedList();//constructor
+    ~DoublyLinkedList();//destructor
 
-    void insertFront(T d);
-    void insertBack(T d);
-    void insertPos(int pos, T d);
-    T removeFront();
-    T removeBack();
+    void insertFront(T d);//insert to front of list
+    void insertBack(T d);//insert to back of list
+    void insertPos(int pos, T d);//insert at a position
+    T removeFront();//remove teh front
+    T removeBack();//remover and retrun back
     int search(T val); //return position of ListNode
-    T removeAtPos(int pos);
-    T getFront();
-    T getBack();
-    DoublyListNode<T>* getNPos(int pos);
-    T getPos(int pos);
+    T removeAtPos(int pos);//remove at a position
+    T getFront();//retruns front
+    T getBack();//returns back
+    DoublyListNode<T>* getNPos(int pos);//helper for getPos
+    T getPos(int pos);//returns data at postion
 
-    int getSize();
-    bool isEmpty();
-    void printList();
-    bool containsDuplicates();
+    int getSize();//returns size
+    bool isEmpty();//returns if empty
+    void printList();//prints list
+    bool containsDuplicates();//returns if contains duplicats
 
-    DoublyListNode<T> *front;
-    DoublyListNode<T> *back;
+    DoublyListNode<T> *front;//pointer for next
+    DoublyListNode<T> *back;//pointer for prev
   private:
     int size;
 };

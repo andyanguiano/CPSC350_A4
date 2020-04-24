@@ -9,6 +9,7 @@ Simulation::~Simulation(){
 }
 
 void Simulation::runSimulation(string file){
+  //opens file and gets initial num of windows
   ifstream infs;
   infs.open(file);
 
@@ -16,7 +17,7 @@ void Simulation::runSimulation(string file){
   string line = "";
   int totalNumStudents = 0;
 
-  //getn numWindows
+  //creates registrars
   getline(infs,line);
   int numWindows = stoi(line);
   Registrar windows[numWindows];
@@ -26,14 +27,13 @@ void Simulation::runSimulation(string file){
   }
 
   int totalWaitingTime = 0;
+  //gets all the students information
   if(!infs.fail()){
     //this gets time students arrive
     while(getline(infs,line)){
-      //lineNum += 1;
       int time = stoi(line);
       //gets numStudents at time
       getline(infs,line);
-      //lineNum += 1;
       int numStudents = stoi(line);
       totalNumStudents += numStudents;
 
@@ -43,6 +43,7 @@ void Simulation::runSimulation(string file){
         lineNum += 1;
         int timeNeeded = stoi(line);
         Student* tempStudent = new Student(time, timeNeeded);
+        //adds students to all students
         allStudents.insertBack(*tempStudent);
       }
     }
@@ -54,6 +55,7 @@ void Simulation::runSimulation(string file){
 
   //main body loop
   while(allStudents.getSize() != 0 || queue->getSize() != 0 || totalBusy != 0){
+    //checks everytime if windows are busy
     int busy = 0;
     for(int i = 0; i < numWindows; ++i){
       if(windows[i].checkIsBusy()){
@@ -61,6 +63,7 @@ void Simulation::runSimulation(string file){
       }
     }
     totalBusy = busy;
+
 
     int numAllStudents = allStudents.getSize();
     //add students to queue if their time
@@ -91,9 +94,7 @@ void Simulation::runSimulation(string file){
   }
 
   //calculate
-  //for mean
 
-  //int totalWaitingTime = 0;
   //for median
   DoublyLinkedList<int>* orderedWaitTimes = new DoublyLinkedList<int>;
   int longestWaitTime = 0;
@@ -101,8 +102,7 @@ void Simulation::runSimulation(string file){
 
   for(int i = 0; i < finishedStudents.getSize()-1; ++i){
 
-    int currentWaitTime = finishedStudents.getPos(i).getWaitTime();//here is seg fault
-    cout << finishedStudents.getBack().getWaitTime() << endl;
+    int currentWaitTime = finishedStudents.getPos(i).getWaitTime();
 
     if(currentWaitTime > longestWaitTime){
       longestWaitTime = currentWaitTime;
@@ -119,8 +119,8 @@ void Simulation::runSimulation(string file){
         checkAdded = true;
         break;
       }
-    }
 
+    }
     if(!checkAdded){
       orderedWaitTimes->insertBack(currentWaitTime);
     }
@@ -131,6 +131,7 @@ void Simulation::runSimulation(string file){
   float meanWaitTime = totalWaitingTime/(orderedWaitTimes->getSize());
   //median wait
   int middlePos = orderedWaitTimes->getSize()/2;
+
   float medianWaitTime = orderedWaitTimes->getPos(middlePos);
 
   //for mean idle time
@@ -154,7 +155,7 @@ void Simulation::runSimulation(string file){
   cout << "2. The median student wait time: " << medianWaitTime << endl;
   cout << "3. The longest student wait time: " << longestWaitTime << endl;
   cout << "4. The number of students waiting over 10 minutes: " << waitOver10 << endl;
-  cout << "5. The mean window idle time: " << meanIdleTime << endl;
+  cout << "5. The mean window idle time: " << meanIdleTime+1 << endl;
   cout << "6. The longest window idle time: " << longestIdleTime << endl;
   cout << "7. Number of windows idle for over 5 minutes: " << idleOver5 << endl;
 }
