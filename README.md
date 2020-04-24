@@ -3,7 +3,7 @@
 Assignment 4 CPSC350-02
 
 Andy Anguiano (2316199)
-Thomas Moore ()
+Thomas Moore (2318524)
 
 References: Class Textbook; Office Hours; Classmates: Jessie Roux, Miles Milosevish;
 
